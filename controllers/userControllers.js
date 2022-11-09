@@ -30,7 +30,26 @@ const signUpUser = async (req, res) => {
 }
 
 const logInUser = async (req, res) => {
+  const {email, password} = req.body;
 
+  try {
+    const user = await User.login(email, password);
+
+    return res
+              .status(200)
+              .json({
+                _id: user._id,
+                fullName: user.fullName,
+                email,
+                token: createToken(user._id)
+              })
+  } catch(err) {
+    return res
+              .status(400)
+              .json({
+                message: err.message
+              })
+  }
 }
 
-module.exports = {signUpUser}
+module.exports = {signUpUser, logInUser}
