@@ -1,10 +1,11 @@
 const express = require('express');
-const { getPosts, createPost } = require('../controllers/postControllers');
+const { getPosts, createPost, getPost } = require('../controllers/postControllers');
 
 const router = express.Router();
 
 router
     .get('/', getPosts)
     .post('/', createPost)
-
+    .get('/:id', getPost)
+    
 module.exports = router
