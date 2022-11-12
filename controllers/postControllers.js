@@ -20,10 +20,10 @@ const getPosts = async (req, res) => {
 }
 
 const createPost = async (req, res) => {
-    const {text, img, likes, comments, shares, userId} = req.body;
+    const {text, img, likes, comments, shares} = req.body;
 
     try {
-        const post = await Post.create({text, img, likes, comments, shares, userId});
+        const post = await Post.create({text, img, likes, comments, shares, userId: req.userId});
 
         return res
                   .status(200)
@@ -50,7 +50,7 @@ const getPost = async (req, res) => {
                   })
     }
 
-    const post = await Post.findById(id);
+    const post = await Post.findOne({_id: id, userId: req.userId});
 
     if(!post) {
         return res
@@ -78,7 +78,7 @@ const updatePost = async (req, res) => {
                   })
     }
 
-    const post = await Post.findOneAndUpdate({_id: id}, {...req.body}, {new: true});
+    const post = await Post.findOneAndUpdate({_id: id, userId: req.userId}, {...req.body}, {new: true});
 
     if(!post) {
         return res
@@ -106,7 +106,7 @@ const deletePost = async (req, res) => {
                   })
     }
 
-    const post = await Post.findOneAndDelete({_id: id});
+    const post = await Post.findOneAndDelete({_id: id, userId: req.userId});
 
     if(!post) {
         return res
