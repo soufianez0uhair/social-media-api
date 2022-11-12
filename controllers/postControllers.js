@@ -67,4 +67,60 @@ const getPost = async (req, res) => {
               })
 }
 
-module.exports = {getPosts, createPost, getPost}
+const updatePost = async (req, res) => {
+    const {id} = req.params;
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res
+                  .status(400)
+                  .json({
+                    message: 'Invalid id'
+                  })
+    }
+
+    const post = await Post.findOneAndUpdate({_id: id}, {...req.body}, {new: true});
+
+    if(!post) {
+        return res
+                  .status(400)
+                  .json({
+                    message: 'No such post was found!'
+                  })
+    }
+
+    res
+        .status(200)
+        .json({
+            post
+        })
+}
+
+const deletePost = async (req, res) => {
+    const {id} = req.params;
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res
+                  .status(400)
+                  .json({
+                    message: 'Invalid Id'
+                  })
+    }
+
+    const post = await Post.findOneAndDelete({_id: id});
+
+    if(!post) {
+        return res
+                  .status(400)
+                  .json({
+                    message: 'No such post was found!'
+                  })
+    }
+
+    res
+        .status(200)
+        .json({
+            post
+        })
+}
+
+module.exports = {getPosts, createPost, getPost, updatePost, deletePost}
