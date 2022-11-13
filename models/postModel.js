@@ -9,10 +9,10 @@ const postSchema = new Schema({
         contentType: String
     },
     likes: {
-        likes: 0,
-        loves: 0,
-        wows: 0,
-        haha: 0
+        likes: Array,
+        loves: Array,
+        wows: Array,
+        haha: Array
     },
     comments: [],
     shares: [],
